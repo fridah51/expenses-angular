@@ -1,0 +1,28 @@
+<p>{{greetings}}</p>
+<button
+  type="button"
+  [disabled]="canClick"
+  (click)="sayMessage()">
+  Trigger alert message
+</button>
+
+<input type="text" [(ngModel)]="greetings"/>
+
+<div *ngIf="checker">
+  this is shown when checker is true
+</div>
+
+
+<ul>
+  <div *ngFor="let exp of expenses" >
+    <div *ngIf="exp.amount > 50 ; else gb">
+      <li style="color:green">
+      {{ exp.id }} {{ exp.name }} {{ exp.amount }} {{ exp.category }} {{ exp.date }}
+      </li>
+    </div>
+    <ng-template #gb>
+      If isValid is false
+    </ng-template>
+  </div>
+  
+</ul>
