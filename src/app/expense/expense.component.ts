@@ -1,45 +1,69 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from "@angular/forms";
+import { ExpensesService} from '../Services/expenses.service';
 import { Expense } from './expense';
+
+
 
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.css']
+  styleUrls: ["./expense.component.css"]
 })
 export class ExpenseComponent implements OnInit {
   greetings:string='hello you!';
-  checker:boolean = true;
-  fontColor = 'blue';
-  sayHelloId = 1;
-  canClick = false;
   message:string='bye bye';
 
-  exp1: Expense = {
-    id: 1,
-    name: 'Home Rent',
-    amount: 20000,
-    category: 'General',
-    date: '20-5-2021'
-  };
-  exp2: Expense = {
-    id: 2,
-    name: 'Bread',
-    amount: 20,
-    category: 'product',
-    date: '20-5-2022'
+  myExpenses : Expense[] = []
+
+  getexp  = this.injectedExpensesService.getExpenses()
+
+  showExpenses(){
+    this.getexp.subscribe((data :any ) =>
+     {
+      this.myExpenses = data;
+      console.log("this is data",data);
+      
+    })
   };
 
-  expenses: Expense[] =[];
+  formGroup = new FormGroup(
+  {
+    id :new FormControl(),
+    name :new FormControl(""),
+    category: new FormControl(""),
+    amount: new FormControl(""),
+    date:new FormControl("")
+  });
 
-  constructor() { 
-    this.expenses.push(this.exp1);
-    this.expenses.push(this.exp2);
+
+  obj:any = {}
+  emitItem(){
+    this.obj = this.formGroup.value;
+    this.injectedExpensesService.addExpense( this.obj )
+    .subscribe((datar) =>
+    {
+      console.log("from datar:,", datar)
+      this.myExpenses.push(datar)
+      console.log("datar here...",datar)
+      console.log(this.myExpenses)
+    });
   }
 
+
+  constructor(private injectedExpensesService: ExpensesService) {
+    console.log(this.myExpenses)
+    this.showExpenses()
+  }
+  
   ngOnInit(): void {
   }
 
   sayMessage() {
    this.greetings = this.message;
   }
+
+
 }
+
+

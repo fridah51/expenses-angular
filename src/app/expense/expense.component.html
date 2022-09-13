@@ -1,28 +1,71 @@
-<p>{{greetings}}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+<p>{{greetings}} </p>
+<input type="text" [(ngModel)]="greetings" >
 <button
+  mat-raised-button color="warning"
   type="button"
-  [disabled]="canClick"
   (click)="sayMessage()">
-  Trigger alert message
+  Trigger message
 </button>
+<h2 class="mt-2">Add Expense</h2>
+<div class="row mt-2" >
 
-<input type="text" [(ngModel)]="greetings"/>
+  <form [formGroup]="formGroup" class="col-6">
+    <div>
+      <label for="input1" class="form-label">Id</label>
+      <input type="number" formControlName="id" class="form-control" id="input1" placeholder="id">
+    </div>
+    <div>
+      <label for="input2" class="form-label">Name</label>
+      <input type="text" formControlName="name" class="form-control" id="input2" placeholder="Name">
+    </div>
+    <div >
+      <label for="input3" class="form-label">Category</label>
+      <input type="text" formControlName="category" class="form-control" id="input3" placeholder="Category">
+    </div>
+    <div >
+      <label for="input4" class="form-label">Amount</label>
+      <input type="number" formControlName="amount" class="form-control" id="input4" placeholder="Amount">
+    </div>
+    <div >
+      <label for="input5" class="form-label">Date</label>
+      <input type="date" formControlName="date" class="form-control" id="input5" placeholder="Date">
+    </div>
 
-<div *ngIf="checker">
-  this is shown when checker is true
+    <button mat-raised-button color="primary" class="mt-2" (click)="emitItem()"  > Submit</button>
+  </form>
+
+  <div class="col-6">
+    <ul>
+      <div *ngFor="let exp of myExpenses" >
+        <!-- <div *ngIf="exp.amount > 0 ; else gb"> -->
+          <li style="color:#800080">
+            <a [routerLink]="['/expense', exp.id]" routerLinkActive="active" ariaCurrentWhenActive="page"> {{ exp.name }} </a>
+            {{ exp.id }} 
+          </li>
+        <!-- </div> -->
+        <!-- <ng-template #gb>
+          If isValid is false
+        </ng-template> -->
+      </div>
+    </ul>
+  </div>
+
 </div>
 
+</body>
+</html>
 
-<ul>
-  <div *ngFor="let exp of expenses" >
-    <div *ngIf="exp.amount > 50 ; else gb">
-      <li style="color:green">
-      {{ exp.id }} {{ exp.name }} {{ exp.amount }} {{ exp.category }} {{ exp.date }}
-      </li>
-    </div>
-    <ng-template #gb>
-      If isValid is false
-    </ng-template>
-  </div>
-  
-</ul>
+
+
+
+
